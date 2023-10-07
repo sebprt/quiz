@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use App\Entity\Piece;
 use App\Entity\Puzzle;
 use App\Repository\PuzzleRepository;
 use Zenstruck\Foundry\ModelFactory;
@@ -34,13 +35,23 @@ final class PuzzleFactory extends ModelFactory
         return [
             'imageUrl' => self::faker()->text(255),
             'name' => self::faker()->text(255),
+            'pieces' => PieceFactory::new()->many(100),
         ];
     }
 
     protected function initialize(): self
     {
         return $this
-            // ->afterInstantiate(function(Puzzle $puzzle): void {})
+            ->afterInstantiate(function (Puzzle $puzzle): void {
+                $isMissingPieces = $puzzle->getPieces()->filter(fn (Piece $piece) => $piece->getIsMissing())->count();
+                while ($isMissingPieces <= 20) {
+                    $puzzle->getPieces()
+                        ->get(random_int(0, 99))
+                        ->setIsMissing(true);
+
+                    $isMissingPieces++;
+                }
+            })
         ;
     }
 

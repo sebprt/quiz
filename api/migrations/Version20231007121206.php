@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231001132524 extends AbstractMigration
+final class Version20231007121206 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,15 @@ final class Version20231001132524 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SEQUENCE map_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE region_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE event (id UUID NOT NULL, name VARCHAR(255) NOT NULL, date DATE NOT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN event.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE map (id INT NOT NULL, name VARCHAR(255) NOT NULL, image_url VARCHAR(255) NOT NULL, description TEXT NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE map_regions (map_id INT NOT NULL, region_id INT NOT NULL, PRIMARY KEY(map_id, region_id))');
+        $this->addSql('CREATE TABLE map (id UUID NOT NULL, name VARCHAR(255) NOT NULL, image_url VARCHAR(255) NOT NULL, description TEXT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN map.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE map_regions (map_id UUID NOT NULL, region_id UUID NOT NULL, PRIMARY KEY(map_id, region_id))');
         $this->addSql('CREATE INDEX IDX_8D4C81AF53C55F64 ON map_regions (map_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D4C81AF98260155 ON map_regions (region_id)');
+        $this->addSql('COMMENT ON COLUMN map_regions.map_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN map_regions.region_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE math_problem (id UUID NOT NULL, text VARCHAR(255) NOT NULL, answer VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN math_problem.id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE piece (id UUID NOT NULL, image_url VARCHAR(255) NOT NULL, location_x DOUBLE PRECISION NOT NULL, location_y DOUBLE PRECISION NOT NULL, is_missing BOOLEAN NOT NULL, PRIMARY KEY(id))');
@@ -46,10 +47,12 @@ final class Version20231001132524 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN puzzle_pieces.piece_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE question (id UUID NOT NULL, text VARCHAR(255) NOT NULL, answer VARCHAR(255) NOT NULL, discr VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN question.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE region (id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, image_url VARCHAR(255) NOT NULL, is_unlocked BOOLEAN NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE region_questions (region_id INT NOT NULL, region_question_id UUID NOT NULL, PRIMARY KEY(region_id, region_question_id))');
+        $this->addSql('CREATE TABLE region (id UUID NOT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, image_url VARCHAR(255) NOT NULL, is_unlocked BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN region.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE region_questions (region_id UUID NOT NULL, region_question_id UUID NOT NULL, PRIMARY KEY(region_id, region_question_id))');
         $this->addSql('CREATE INDEX IDX_D91C00E198260155 ON region_questions (region_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_D91C00E1C90BC365 ON region_questions (region_question_id)');
+        $this->addSql('COMMENT ON COLUMN region_questions.region_id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN region_questions.region_question_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE region_question (id UUID NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN region_question.id IS \'(DC2Type:uuid)\'');
@@ -91,8 +94,6 @@ final class Version20231001132524 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('DROP SEQUENCE map_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE region_id_seq CASCADE');
         $this->addSql('ALTER TABLE map_regions DROP CONSTRAINT FK_8D4C81AF53C55F64');
         $this->addSql('ALTER TABLE map_regions DROP CONSTRAINT FK_8D4C81AF98260155');
         $this->addSql('ALTER TABLE piece_math_problems DROP CONSTRAINT FK_1AA67229C40FCFA8');

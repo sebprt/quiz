@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Region;
+use App\Entity\Word;
 use Doctrine\ORM\EntityRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -34,16 +35,10 @@ final class RegionFactory extends ModelFactory
         return [
             'description' => self::faker()->text(),
             'imageUrl' => self::faker()->text(255),
-            'isUnlocked' => self::faker()->boolean(),
+            'isUnlocked' => true,
             'name' => self::faker()->text(255),
+            'questions' => RegionQuestionFactory::new()->many(20),
         ];
-    }
-
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Region $region): void {})
-        ;
     }
 
     protected static function getClass(): string

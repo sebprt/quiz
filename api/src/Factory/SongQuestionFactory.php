@@ -29,37 +29,12 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class SongQuestionFactory extends ModelFactory
 {
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
-     */
     protected function getDefaults(): array
     {
         return [
             'answer' => self::faker()->text(255),
             'text' => self::faker()->text(255),
         ];
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(SongQuestion $songQuestion): void {})
-        ;
     }
 
     protected static function getClass(): string

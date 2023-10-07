@@ -38,13 +38,6 @@ final class EventFactory extends ModelFactory
         ];
     }
 
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Event $event): void {})
-        ;
-    }
-
     protected static function getClass(): string
     {
         return Event::class;

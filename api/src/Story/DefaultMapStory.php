@@ -2,13 +2,13 @@
 
 namespace App\Story;
 
-use App\Factory\SongFactory;
+use App\Factory\MapFactory;
 use Zenstruck\Foundry\Story;
 
-final class DefaultSongStory extends Story
+final class DefaultMapStory extends Story
 {
     public function build(): void
     {
-        SongFactory::createMany(15);
+        MapFactory::createMany(20);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use App\Entity\MathProblem;
 use App\Entity\Piece;
 use Doctrine\ORM\EntityRepository;
 use Zenstruck\Foundry\ModelFactory;
@@ -33,17 +34,11 @@ final class PieceFactory extends ModelFactory
     {
         return [
             'imageUrl' => self::faker()->text(255),
-            'isMissing' => self::faker()->boolean(),
+            'isMissing' => false,
             'locationX' => self::faker()->randomFloat(),
             'locationY' => self::faker()->randomFloat(),
+            'mathProblems' => MathProblemFactory::new()->many(3),
         ];
-    }
-
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Piece $piece): void {})
-        ;
     }
 
     protected static function getClass(): string

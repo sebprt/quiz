@@ -36,14 +36,8 @@ final class SongFactory extends ModelFactory
             'audioUrl' => self::faker()->text(255),
             'genre' => self::faker()->text(255),
             'title' => self::faker()->text(255),
+            'questions' => SongQuestionFactory::new()->many(1, 5),
         ];
-    }
-
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Song $song): void {})
-        ;
     }
 
     protected static function getClass(): string

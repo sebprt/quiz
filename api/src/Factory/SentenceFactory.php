@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Sentence;
+use App\Entity\Word;
 use App\Repository\SentenceRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -33,13 +34,19 @@ final class SentenceFactory extends ModelFactory
     {
         return [
             'text' => self::faker()->text(255),
+            'words' => WordFactory::new()->many(6),
         ];
     }
 
     protected function initialize(): self
     {
         return $this
-            // ->afterInstantiate(function(Sentence $sentence): void {})
+             ->afterInstantiate(function (Sentence $sentence): void {
+                 $isMissingWords = $sentence->getWords()->filter(fn (Word $word) => $word->getIsCorrect())->count();
+                 if ($isMissingWords <= 0) {
+                     $sentence->getWords()->get(random_int(0, 5))->setIsCorrect(true);
+                 }
+             })
         ;
     }
 

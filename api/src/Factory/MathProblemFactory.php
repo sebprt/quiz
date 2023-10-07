@@ -37,13 +37,6 @@ final class MathProblemFactory extends ModelFactory
         ];
     }
 
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(MathProblem $mathProblem): void {})
-        ;
-    }
-
     protected static function getClass(): string
     {
         return MathProblem::class;

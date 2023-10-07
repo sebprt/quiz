@@ -32,16 +32,9 @@ final class WordFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'isCorrect' => self::faker()->boolean(),
+            'isCorrect' => false,
             'text' => self::faker()->text(255),
         ];
-    }
-
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Word $word): void {})
-        ;
     }
 
     protected static function getClass(): string

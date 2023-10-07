@@ -37,13 +37,6 @@ final class RegionQuestionFactory extends ModelFactory
         ];
     }
 
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(RegionQuestion $regionQuestion): void {})
-        ;
-    }
-
     protected static function getClass(): string
     {
         return RegionQuestion::class;

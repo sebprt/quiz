@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -18,8 +19,9 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: PuzzleRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
+        new GetCollection(),
         new Post(),
+        new Get(),
         new Put(),
         new Patch(),
         new Delete(),

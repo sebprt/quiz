@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -12,13 +14,17 @@ use App\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
+        new GetCollection(),
         new Post(),
+        new Get(),
         new Put(),
         new Patch(),
         new Delete(),
@@ -33,12 +39,21 @@ class Event
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
+    #[ApiProperty(
+        jsonSchemaContext: [
+            'format' => 'date'
+        ],
+    )]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Context(context: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Assert\NotNull]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
     public function getId(): ?Uuid

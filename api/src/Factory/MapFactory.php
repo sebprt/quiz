@@ -35,14 +35,8 @@ final class MapFactory extends ModelFactory
             'description' => self::faker()->text(),
             'imageUrl' => self::faker()->text(255),
             'name' => self::faker()->text(255),
+            'regions' => RegionFactory::new()->many(10),
         ];
-    }
-
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Map $map): void {})
-        ;
     }
 
     protected static function getClass(): string
