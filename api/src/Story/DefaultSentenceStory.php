@@ -9,6 +9,6 @@ final class DefaultSentenceStory extends Story
 {
     public function build(): void
     {
-        SentenceFactory::createMany(100);
+        SentenceFactory::createMany(20);
     }
 }

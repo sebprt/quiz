@@ -56,9 +56,9 @@ class MapTest extends ApiTestCase
             '@context' => '/contexts/Map',
             '@id' => '/maps',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 20,
+            'hydra:totalItems' => 5,
         ]);
-        $this->assertCount(20, $response->toArray()['hydra:member']);
+        $this->assertCount(5, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(Map::class);
     }
 
@@ -97,7 +97,7 @@ class MapTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             '@id' => $iri,
-            'title' => $name,
+            'name' => $name,
             'imageUrl' => $event->getImageUrl(),
             'description' => $event->getDescription(),
         ]);

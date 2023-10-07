@@ -5,9 +5,12 @@ namespace App\Factory;
 use App\Entity\MathProblem;
 use App\Entity\Piece;
 use Doctrine\ORM\EntityRepository;
+use Zenstruck\Foundry\LazyValue;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
+use function Zenstruck\Foundry\lazy;
+use function Zenstruck\Foundry\memoize;
 
 /**
  * @extends ModelFactory<Piece>

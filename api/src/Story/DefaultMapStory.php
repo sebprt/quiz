@@ -9,6 +9,6 @@ final class DefaultMapStory extends Story
 {
     public function build(): void
     {
-        MapFactory::createMany(20);
+        MapFactory::createMany(5);
     }
 }

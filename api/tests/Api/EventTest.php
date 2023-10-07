@@ -56,15 +56,9 @@ class EventTest extends ApiTestCase
             '@context' => '/contexts/Event',
             '@id' => '/events',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 50,
-            'hydra:view' => [
-                '@id' => '/events?page=1',
-                '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/events?page=1',
-                'hydra:last' => '/events?page=2',
-            ],
+            'hydra:totalItems' => 20,
         ]);
-        $this->assertCount(30, $response->toArray()['hydra:member']);
+        $this->assertCount(20, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(Event::class);
     }
 

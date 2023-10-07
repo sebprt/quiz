@@ -9,6 +9,6 @@ final class DefaultSongStory extends Story
 {
     public function build(): void
     {
-        SongFactory::createMany(15);
+        SongFactory::createMany(20);
     }
 }

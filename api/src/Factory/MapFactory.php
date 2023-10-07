@@ -7,6 +7,8 @@ use App\Repository\MapRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
+use function Zenstruck\Foundry\lazy;
+use function Zenstruck\Foundry\memoize;
 
 /**
  * @extends ModelFactory<Map>
@@ -35,7 +37,7 @@ final class MapFactory extends ModelFactory
             'description' => self::faker()->text(),
             'imageUrl' => self::faker()->text(255),
             'name' => self::faker()->text(255),
-            'regions' => RegionFactory::new()->many(10),
+            'regions' => RegionFactory::new()->many(5),
         ];
     }
 

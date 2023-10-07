@@ -58,9 +58,9 @@ class SongTest extends ApiTestCase
             '@context' => '/contexts/Song',
             '@id' => '/songs',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 15,
+            'hydra:totalItems' => 20,
         ]);
-        $this->assertCount(15, $response->toArray()['hydra:member']);
+        $this->assertCount(20, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(Song::class);
     }
 

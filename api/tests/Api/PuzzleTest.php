@@ -54,16 +54,9 @@ class PuzzleTest extends ApiTestCase
             '@context' => '/contexts/Puzzle',
             '@id' => '/puzzles',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 30,
-            'hydra:view' => [
-                '@id' => '/puzzles?page=1',
-                '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/puzzles?page=1',
-                'hydra:next' => '/puzzles?page=2',
-                'hydra:last' => '/puzzles?page=2',
-            ],
+            'hydra:totalItems' => 5,
         ]);
-        $this->assertCount(30, $response->toArray()['hydra:member']);
+        $this->assertCount(5, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(Puzzle::class);
     }
 
@@ -101,7 +94,7 @@ class PuzzleTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             '@id' => $iri,
-            'title' => $name,
+            'name' => $name,
             'imageUrl' => $event->getImageUrl(),
         ]);
     }

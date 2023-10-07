@@ -5,9 +5,12 @@ namespace App\Factory;
 use App\Entity\Sentence;
 use App\Entity\Word;
 use App\Repository\SentenceRepository;
+use Zenstruck\Foundry\LazyValue;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
+use function Zenstruck\Foundry\lazy;
+use function Zenstruck\Foundry\memoize;
 
 /**
  * @extends ModelFactory<Sentence>
@@ -34,20 +37,13 @@ final class SentenceFactory extends ModelFactory
     {
         return [
             'text' => self::faker()->text(255),
-            'words' => WordFactory::new()->many(6),
+            'words' => array_merge(
+                WordFactory::new()->many(5)->create(),
+                WordFactory::new()->many(1)->create([
+                    'isCorrect' => true
+                ]),
+            ),
         ];
-    }
-
-    protected function initialize(): self
-    {
-        return $this
-             ->afterInstantiate(function (Sentence $sentence): void {
-                 $isMissingWords = $sentence->getWords()->filter(fn (Word $word) => $word->getIsCorrect())->count();
-                 if ($isMissingWords <= 0) {
-                     $sentence->getWords()->get(random_int(0, 5))->setIsCorrect(true);
-                 }
-             })
-        ;
     }
 
     protected static function getClass(): string

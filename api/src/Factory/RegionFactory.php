@@ -5,9 +5,12 @@ namespace App\Factory;
 use App\Entity\Region;
 use App\Entity\Word;
 use Doctrine\ORM\EntityRepository;
+use Zenstruck\Foundry\LazyValue;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
+use function Zenstruck\Foundry\lazy;
+use function Zenstruck\Foundry\memoize;
 
 /**
  * @extends ModelFactory<Region>
@@ -34,10 +37,10 @@ final class RegionFactory extends ModelFactory
     {
         return [
             'description' => self::faker()->text(),
-            'imageUrl' => self::faker()->text(255),
+            'imageUrl' => self::faker()->imageUrl(),
             'isUnlocked' => true,
             'name' => self::faker()->text(255),
-            'questions' => RegionQuestionFactory::new()->many(20),
+            'questions' => RegionQuestionFactory::new()->many(10),
         ];
     }
 

@@ -5,9 +5,13 @@ namespace App\Factory;
 use App\Entity\Piece;
 use App\Entity\Puzzle;
 use App\Repository\PuzzleRepository;
+use Zenstruck\Foundry\LazyValue;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\iterator;
+use function Zenstruck\Foundry\lazy;
+use function Zenstruck\Foundry\memoize;
 
 /**
  * @extends ModelFactory<Puzzle>
@@ -33,26 +37,15 @@ final class PuzzleFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'imageUrl' => self::faker()->text(255),
+            'imageUrl' => self::faker()->imageUrl(),
             'name' => self::faker()->text(255),
-            'pieces' => PieceFactory::new()->many(100),
+            'pieces' => array_merge(
+                PieceFactory::new()->many(15)->create(),
+                PieceFactory::new()->many(5)->create([
+                    'isMissing' => true
+                ]),
+            ),
         ];
-    }
-
-    protected function initialize(): self
-    {
-        return $this
-            ->afterInstantiate(function (Puzzle $puzzle): void {
-                $isMissingPieces = $puzzle->getPieces()->filter(fn (Piece $piece) => $piece->getIsMissing())->count();
-                while ($isMissingPieces <= 20) {
-                    $puzzle->getPieces()
-                        ->get(random_int(0, 99))
-                        ->setIsMissing(true);
-
-                    $isMissingPieces++;
-                }
-            })
-        ;
     }
 
     protected static function getClass(): string

@@ -9,6 +9,6 @@ final class DefaultEventsStory extends Story
 {
     public function build(): void
     {
-        EventFactory::createMany(50);
+        EventFactory::createMany(20);
     }
 }

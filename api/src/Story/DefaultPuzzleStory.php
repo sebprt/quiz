@@ -9,6 +9,6 @@ final class DefaultPuzzleStory extends Story
 {
     public function build(): void
     {
-        PuzzleFactory::createMany(30);
+        PuzzleFactory::createMany(5);
     }
 }

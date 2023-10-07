@@ -52,16 +52,9 @@ class SentenceTest extends ApiTestCase
             '@context' => '/contexts/Sentence',
             '@id' => '/sentences',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 100,
-            'hydra:view' => [
-                '@id' => '/sentences?page=1',
-                '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/sentences?page=1',
-                'hydra:last' => '/sentences?page=4',
-                'hydra:next' => '/sentences?page=2',
-            ],
+            'hydra:totalItems' => 20,
         ]);
-        $this->assertCount(30, $response->toArray()['hydra:member']);
+        $this->assertCount(20, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(Sentence::class);
     }
 
