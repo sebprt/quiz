@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +15,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new Post(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+        new Get(uriTemplate: '/songs/{id}/questions', name: 'get_song_questions'),
+        new Post(uriTemplate: '/songs/{id}/questions', name: 'post_song_questions'),
+        new Put(uriTemplate: '/songs/{id}/questions/{questionId}', name: 'put_song_questions'),
+        new Patch(uriTemplate: '/songs/{id}/questions/{questionId}', name: 'patch_song_questions'),
+        new Delete(uriTemplate: '/songs/{id}/questions/{questionId}', name: 'delete_song_questions'),
+    ]
+)]
 class Song
 {
     #[ORM\Id]

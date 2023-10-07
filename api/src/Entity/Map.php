@@ -2,6 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\MapRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +15,18 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MapRepository::class)]
+#[ApiResource(operations: [
+    new Get(),
+    new Post(),
+    new Put(),
+    new Patch(),
+    new Delete(),
+    new Get(uriTemplate: '/maps/{id}/regions', name: 'get_map_regions'),
+    new Post(uriTemplate: '/maps/{id}/regions', name: 'post_map_regions'),
+    new Put(uriTemplate: '/maps/{id}/regions/{regionId}', name: 'put_map_regions'),
+    new Patch(uriTemplate: '/maps/{id}/regions/{regionId}', name: 'patch_map_regions'),
+    new Delete(uriTemplate: '/maps/{id}/regions/{regionId}', name: 'delete_map_regions'),
+])]
 class Map
 {
     #[ORM\Id]

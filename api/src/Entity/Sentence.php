@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\SentenceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +16,20 @@ use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: SentenceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new Post(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+        new Get(uriTemplate: '/sentences/{id}/words', name: 'get_sentence_words'),
+        new Post(uriTemplate: '/sentences/{id}/words', name: 'post_sentence_words'),
+        new Put(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'put_sentence_words'),
+        new Patch(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'patch_sentence_words'),
+        new Delete(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'delete_sentence_word'),
+    ],
+)]
 class Sentence
 {
     #[ORM\Id]

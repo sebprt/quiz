@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\PuzzleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +16,20 @@ use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PuzzleRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new Post(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+        new Get(uriTemplate: '/quizzes/{id}/pieces', name: 'get_quiz_pieces'),
+        new Post(uriTemplate: '/quizzes/{id}/pieces', name: 'post_quiz_pieces'),
+        new Put(uriTemplate: '/quizzes/{id}/pieces/{pieceId}', name: 'put_quiz_pieces'),
+        new Patch(uriTemplate: '/quizzes/{id}/pieces/{pieceId}', name: 'patch_quiz_pieces'),
+        new Delete(uriTemplate: '/quizzes/{id}/pieces/{pieceId}', name: 'delete_quiz_pieces'),
+    ],
+)]
 class Puzzle
 {
     #[ORM\Id]
