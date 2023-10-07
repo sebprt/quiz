@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[ApiResource(
@@ -40,20 +41,30 @@ class Song
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $artist = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $genre = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $audioUrl = null;
 
     #[ORM\JoinTable(name: 'song_questions')]
     #[ORM\InverseJoinColumn(unique: true)]
     #[ORM\ManyToMany(targetEntity: SongQuestion::class, orphanRemoval: true)]
+    #[Assert\Count(
+        min: 1,
+        max: 10,
+        minMessage: 'You must specify at least one question',
+        maxMessage: 'You cannot specify more than {{ limit }} questions',
+    )]
     private Collection $questions;
 
     public function __construct()

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 class Region
@@ -18,20 +19,30 @@ class Region
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
+    #[Assert\Type(type: 'boolean')]
     private ?bool $isUnlocked = null;
 
     #[ORM\JoinTable(name: 'region_questions')]
     #[ORM\InverseJoinColumn(unique: true)]
     #[ORM\ManyToMany(targetEntity: RegionQuestion::class)]
+    #[Assert\Count(
+        min: 1,
+        max: 20,
+        minMessage: 'You must specify at least one question',
+        maxMessage: 'You cannot specify more than {{ limit }} questions',
+    )]
     private Collection $questions;
 
     public function __construct()

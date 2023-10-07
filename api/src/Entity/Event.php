@@ -39,7 +39,7 @@ class Event
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $name = null;
 
     #[ApiProperty(
@@ -49,11 +49,11 @@ class Event
     )]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Context(context: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
-    #[Assert\NotNull]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $description = null;
 
     public function getId(): ?Uuid

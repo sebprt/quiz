@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MapRepository::class)]
 #[ApiResource(operations: [
@@ -39,17 +40,26 @@ class Map
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $imageUrl = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\JoinTable(name: 'map_regions')]
     #[ORM\InverseJoinColumn(unique: true)]
     #[ORM\ManyToMany(targetEntity: Region::class)]
+    #[Assert\Count(
+        min: 1,
+        max: 10,
+        minMessage: 'You must specify at least one region',
+        maxMessage: 'You cannot specify more than {{ limit }} region',
+    )]
     private Collection $regions;
 
     public function __construct()

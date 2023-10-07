@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 class Word
@@ -15,9 +16,11 @@ class Word
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $text = null;
 
     #[ORM\Column]
+    #[Assert\NotNull, Assert\Type(type: 'boolean')]
     private ?bool $isCorrect = null;
 
     public function getId(): ?Uuid

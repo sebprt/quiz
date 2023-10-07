@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PuzzleRepository::class)]
 #[ApiResource(
@@ -41,14 +42,22 @@ class Puzzle
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $imageUrl = null;
 
     #[ORM\JoinTable(name: 'puzzle_pieces')]
     #[ORM\InverseJoinColumn(unique: true)]
     #[ORM\ManyToMany(targetEntity: Piece::class, orphanRemoval: true)]
+    #[Assert\Count(
+        min: 10,
+        max: 20,
+        minMessage: 'You must specify at least one piece',
+        maxMessage: 'You cannot specify more than {{ limit }} pieces',
+    )]
     private Collection $pieces;
 
     public function __construct()

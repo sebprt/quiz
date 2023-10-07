@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 class Piece
@@ -18,20 +19,30 @@ class Piece
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
+    #[Assert\Type(type: 'float')]
     private ?float $locationX = null;
 
     #[ORM\Column]
+    #[Assert\Type(type: 'float')]
     private ?float $locationY = null;
 
     #[ORM\Column]
+    #[Assert\Type(type: 'boolean')]
     private ?bool $isMissing = null;
 
     #[ORM\JoinTable(name: 'piece_math_problems')]
     #[ORM\InverseJoinColumn(unique: true)]
     #[ORM\ManyToMany(targetEntity: MathProblem::class, orphanRemoval: true)]
+    #[Assert\Count(
+        min: 1,
+        max: 3,
+        minMessage: 'You must specify at least one math problem',
+        maxMessage: 'You cannot specify more than {{ limit }} math problems',
+    )]
     private Collection $mathProblems;
 
     public function __construct()

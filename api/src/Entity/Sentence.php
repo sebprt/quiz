@@ -14,19 +14,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SentenceRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(),
-        new Post(),
-        new Get(),
-        new Put(),
-        new Patch(),
+        new GetCollection(
+            normalizationContext: ['groups' => ['sentence:read']],
+        ),
+        new Post(
+            denormalizationContext: ['groups' => ['sentence:write']],
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['sentence:read']],
+        ),
+        new Put(
+            denormalizationContext: ['groups' => ['sentence:write']],
+        ),
+        new Patch(
+            denormalizationContext: ['groups' => ['sentence:write']],
+        ),
         new Delete(),
-        new Get(uriTemplate: '/sentences/{id}/words', name: 'get_sentence_words'),
-        new Post(uriTemplate: '/sentences/{id}/words', name: 'post_sentence_words'),
+        new Get(
+            uriTemplate: '/sentences/{id}/words',
+            normalizationContext: ['groups' => ['sentence:read:words']],
+            name: 'get_sentence_words',
+        ),
+        new Post(
+            uriTemplate: '/sentences/{id}/words',
+            denormalizationContext: ['groups' => ['sentence:write']],
+            name: 'post_sentence_words',
+        ),
         new Put(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'put_sentence_words'),
         new Patch(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'patch_sentence_words'),
         new Delete(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'delete_sentence_word'),
@@ -38,14 +58,24 @@ class Sentence
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups('sentence:read')]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['sentence:read', 'sentence:write'])]
     private ?string $text = null;
 
     #[ORM\JoinTable(name: 'sentence_words')]
     #[ORM\InverseJoinColumn(unique: true)]
     #[ORM\ManyToMany(targetEntity: Word::class, orphanRemoval: true)]
+    #[Assert\Count(
+        min: 1,
+        max: 6,
+        minMessage: 'You must specify at least one word',
+        maxMessage: 'You cannot specify more than {{ limit }} words',
+    )]
+    #[Groups(['sentence:read:words', 'sentence:write:words'])]
     private Collection $words;
 
     public function __construct()
