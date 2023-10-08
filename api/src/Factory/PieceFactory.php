@@ -36,7 +36,7 @@ final class PieceFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'imageUrl' => self::faker()->text(255),
+            'imageUrl' => self::faker()->imageUrl(),
             'isMissing' => false,
             'locationX' => self::faker()->randomFloat(),
             'locationY' => self::faker()->randomFloat(),

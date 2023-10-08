@@ -35,7 +35,7 @@ final class MapFactory extends ModelFactory
     {
         return [
             'description' => self::faker()->text(),
-            'imageUrl' => self::faker()->text(255),
+            'imageUrl' => self::faker()->imageUrl(),
             'name' => self::faker()->text(255),
             'regions' => RegionFactory::new()->many(5),
         ];

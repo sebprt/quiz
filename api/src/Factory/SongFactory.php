@@ -36,7 +36,7 @@ final class SongFactory extends ModelFactory
     {
         return [
             'artist' => self::faker()->text(255),
-            'audioUrl' => self::faker()->text(255),
+            'audioUrl' => self::faker()->url(),
             'genre' => self::faker()->text(255),
             'title' => self::faker()->text(255),
             'questions' => SongQuestionFactory::new()->many(1, 5),
