@@ -10,6 +10,7 @@ use App\Entity\Word;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Uuid;
 
 final readonly class UpdateSentenceWordProcessor implements ProcessorInterface
 {
@@ -31,7 +32,7 @@ final readonly class UpdateSentenceWordProcessor implements ProcessorInterface
 
         $sentence->getWords()->map(
             fn (Word $word) =>
-                $word->getId()->equals($request->get('wordId'))
+                $word->getId()?->equals(Uuid::fromString($request->get('wordId')))
                 && $word->setText($data->text)
                 && $word->setIsCorrect($data->isCorrect)
         );
