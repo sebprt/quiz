@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,9 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Delete(),
     new Get(uriTemplate: '/maps/{id}/regions', name: 'get_map_regions'),
     new Post(uriTemplate: '/maps/{id}/regions', name: 'post_map_regions'),
-    new Put(uriTemplate: '/maps/{id}/regions/{regionId}', name: 'put_map_regions'),
-    new Patch(uriTemplate: '/maps/{id}/regions/{regionId}', name: 'patch_map_regions'),
-    new Delete(uriTemplate: '/maps/{id}/regions/{regionId}', name: 'delete_map_regions'),
 ])]
 class Map
 {
@@ -37,18 +35,22 @@ class Map
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['map:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['map:read', 'map:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['map:read', 'map:write'])]
     private ?string $imageUrl = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['map:read', 'map:write'])]
     private ?string $description = null;
 
     #[ORM\JoinTable(name: 'map_regions')]
@@ -60,6 +62,7 @@ class Map
         minMessage: 'You must specify at least one region',
         maxMessage: 'You cannot specify more than {{ limit }} region',
     )]
+    #[Groups(['map:read:regions', 'map:write:regions'])]
     private Collection $regions;
 
     public function __construct()

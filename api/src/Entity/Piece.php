@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,22 +17,27 @@ class Piece
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['puzzle:read:pieces'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
     #[Assert\Type(type: 'float')]
+    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
     private ?float $locationX = null;
 
     #[ORM\Column]
     #[Assert\Type(type: 'float')]
+    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
     private ?float $locationY = null;
 
     #[ORM\Column]
     #[Assert\Type(type: 'boolean')]
+    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
     private ?bool $isMissing = null;
 
     #[ORM\JoinTable(name: 'piece_math_problems')]
@@ -43,6 +49,7 @@ class Piece
         minMessage: 'You must specify at least one math problem',
         maxMessage: 'You cannot specify more than {{ limit }} math problems',
     )]
+    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
     private Collection $mathProblems;
 
     public function __construct()

@@ -14,23 +14,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PuzzleRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(),
-        new Post(),
-        new Get(),
-        new Put(),
-        new Patch(),
+        new GetCollection(
+            normalizationContext: ['groups' => ['puzzle:read']],
+        ),
+        new Post(
+            denormalizationContext: ['groups' => ['puzzle:write']],
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['puzzle:read']],
+        ),
+        new Put(
+            denormalizationContext: ['groups' => ['puzzle:write']],
+        ),
+        new Patch(
+            denormalizationContext: ['groups' => ['puzzle:write']],
+        ),
         new Delete(),
-        new Get(uriTemplate: '/quizzes/{id}/pieces', name: 'get_quiz_pieces'),
-        new Post(uriTemplate: '/quizzes/{id}/pieces', name: 'post_quiz_pieces'),
-        new Put(uriTemplate: '/quizzes/{id}/pieces/{pieceId}', name: 'put_quiz_pieces'),
-        new Patch(uriTemplate: '/quizzes/{id}/pieces/{pieceId}', name: 'patch_quiz_pieces'),
-        new Delete(uriTemplate: '/quizzes/{id}/pieces/{pieceId}', name: 'delete_quiz_pieces'),
+        new Get(
+            uriTemplate: '/quizzes/{id}/pieces',
+            normalizationContext: ['groups' => ['puzzle:read:pieces']],
+            name: 'get_quiz_pieces'
+        ),
+        new Post(
+            uriTemplate: '/quizzes/{id}/pieces',
+            denormalizationContext: ['groups' => ['puzzle:write:pieces']],
+            name: 'post_quiz_pieces'
+        ),
     ],
 )]
 class Puzzle
@@ -39,14 +55,17 @@ class Puzzle
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['puzzle:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['puzzle:read', 'puzzle:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['puzzle:read', 'puzzle:write'])]
     private ?string $imageUrl = null;
 
     #[ORM\JoinTable(name: 'puzzle_pieces')]
@@ -58,6 +77,7 @@ class Puzzle
         minMessage: 'You must specify at least one piece',
         maxMessage: 'You cannot specify more than {{ limit }} pieces',
     )]
+    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
     private Collection $pieces;
 
     public function __construct()

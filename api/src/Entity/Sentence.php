@@ -44,12 +44,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             uriTemplate: '/sentences/{id}/words',
-            denormalizationContext: ['groups' => ['sentence:write']],
+            denormalizationContext: ['groups' => ['sentence:write:words']],
             name: 'post_sentence_words',
         ),
-        new Put(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'put_sentence_words'),
-        new Patch(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'patch_sentence_words'),
-        new Delete(uriTemplate: '/sentences/{id}/words/{wordId}', name: 'delete_sentence_word'),
     ],
 )]
 class Sentence
@@ -68,7 +65,7 @@ class Sentence
 
     #[ORM\JoinTable(name: 'sentence_words')]
     #[ORM\InverseJoinColumn(unique: true)]
-    #[ORM\ManyToMany(targetEntity: Word::class, orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Word::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Count(
         min: 1,
         max: 6,

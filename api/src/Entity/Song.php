@@ -13,23 +13,39 @@ use App\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(),
-        new Post(),
-        new Get(),
-        new Put(),
-        new Patch(),
+        new GetCollection(
+            normalizationContext: ['groups' => ['song:read']],
+        ),
+        new Post(
+            denormalizationContext: ['groups' => ['song:write']],
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['song:read']],
+        ),
+        new Put(
+            denormalizationContext: ['groups' => ['song:write']],
+        ),
+        new Patch(
+            denormalizationContext: ['groups' => ['song:write']],
+        ),
         new Delete(),
-        new Get(uriTemplate: '/songs/{id}/questions', name: 'get_song_questions'),
-        new Post(uriTemplate: '/songs/{id}/questions', name: 'post_song_questions'),
-        new Put(uriTemplate: '/songs/{id}/questions/{questionId}', name: 'put_song_questions'),
-        new Patch(uriTemplate: '/songs/{id}/questions/{questionId}', name: 'patch_song_questions'),
-        new Delete(uriTemplate: '/songs/{id}/questions/{questionId}', name: 'delete_song_questions'),
+        new Get(
+            uriTemplate: '/songs/{id}/questions',
+            normalizationContext: ['groups' => ['song:read:questions']],
+            name: 'get_song_questions'
+        ),
+        new Post(
+            uriTemplate: '/songs/{id}/questions',
+            denormalizationContext: ['groups' => ['song:write:questions']],
+            name: 'post_song_questions'
+        ),
     ]
 )]
 class Song
@@ -38,22 +54,27 @@ class Song
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['song:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['song:read', 'song:write'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['song:read', 'song:write'])]
     private ?string $artist = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['song:read', 'song:write'])]
     private ?string $genre = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['song:read', 'song:write'])]
     private ?string $audioUrl = null;
 
     #[ORM\JoinTable(name: 'song_questions')]
@@ -65,6 +86,7 @@ class Song
         minMessage: 'You must specify at least one question',
         maxMessage: 'You cannot specify more than {{ limit }} questions',
     )]
+    #[Groups(['song:read:questions', 'song:write:questions'])]
     private Collection $questions;
 
     public function __construct()

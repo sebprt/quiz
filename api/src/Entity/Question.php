@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,14 +18,17 @@ class Question
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['song:read:questions', 'map:read:questions'])]
     protected ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['song:read:questions', 'song:write:questions', 'map:read:regions', 'map:write:regions'])]
     protected ?string $text = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['song:read:questions', 'song:write:questions', 'map:read:regions', 'map:write:regions'])]
     protected ?string $answer = null;
 
     public function getId(): ?Uuid
