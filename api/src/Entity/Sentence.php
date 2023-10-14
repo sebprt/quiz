@@ -6,9 +6,11 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\RemovedWordController;
 use App\Repository\SentenceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -46,6 +48,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/sentences/{id}/words',
             denormalizationContext: ['groups' => ['sentence:write:words']],
             name: 'post_sentence_words',
+        ),
+        new Delete(
+            uriTemplate: '/sentences/{id}/words/{wordId}',
+            controller: RemovedWordController::class,
+            read: false,
+            name: 'delete_sentence_word',
         ),
     ],
 )]
