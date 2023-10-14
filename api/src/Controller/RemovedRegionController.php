@@ -4,35 +4,35 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Sentence;
-use App\Entity\Word;
+use App\Entity\Map;
+use App\Entity\Region;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class RemovedWordController extends AbstractController
+class RemovedRegionController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $repository,
     ){}
 
-    public function __invoke(string $id, string $wordId): void
+    public function __invoke(string $id, string $regionId): void
     {
-        $sentence = $this->repository->find(Sentence::class, $id);
-        if ($sentence === null) {
+        $map = $this->repository->find(Map::class, $id);
+        if ($map === null) {
             throw new EntityNotFoundException();
         }
 
-        $word = $this->repository->find(Word::class, $wordId);
-        if ($word === null) {
+        $region = $this->repository->find(Region::class, $regionId);
+        if ($region === null) {
             throw new EntityNotFoundException();
         }
 
-        $sentence->removeWord($word);
+        $map->removeQuestion($region);
 
-        $this->repository->persist($sentence);
+        $this->repository->persist($map);
         $this->repository->flush();
     }
 }

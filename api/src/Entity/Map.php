@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\RemovedRegionController;
 use App\Repository\MapRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,6 +29,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Delete(),
     new Get(uriTemplate: '/maps/{id}/regions', name: 'get_map_regions'),
     new Post(uriTemplate: '/maps/{id}/regions', name: 'post_map_regions'),
+    new Delete(
+        uriTemplate: '/maps/{id}/regions/{regionId}',
+        controller: RemovedRegionController::class,
+        read: false,
+        name: 'delete_map_region',
+    ),
 ])]
 class Map
 {

@@ -4,35 +4,35 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Sentence;
-use App\Entity\Word;
+use App\Entity\Piece;
+use App\Entity\Puzzle;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class RemovedWordController extends AbstractController
+class RemovedPieceController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $repository,
     ){}
 
-    public function __invoke(string $id, string $wordId): void
+    public function __invoke(string $id, string $pieceId): void
     {
-        $sentence = $this->repository->find(Sentence::class, $id);
-        if ($sentence === null) {
+        $puzzle = $this->repository->find(Puzzle::class, $id);
+        if ($puzzle === null) {
             throw new EntityNotFoundException();
         }
 
-        $word = $this->repository->find(Word::class, $wordId);
-        if ($word === null) {
+        $piece = $this->repository->find(Piece::class, $pieceId);
+        if ($piece === null) {
             throw new EntityNotFoundException();
         }
 
-        $sentence->removeWord($word);
+        $puzzle->removePiece($piece);
 
-        $this->repository->persist($sentence);
+        $this->repository->persist($puzzle);
         $this->repository->flush();
     }
 }

@@ -11,7 +11,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedWordController;
+use App\DTO\UpdateSentenceWordDTO;
 use App\Repository\SentenceRepository;
+use App\State\UpdateSentenceWordProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -48,6 +50,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/sentences/{id}/words',
             denormalizationContext: ['groups' => ['sentence:write:words']],
             name: 'post_sentence_words',
+        ),
+        new Put(
+            uriTemplate: '/sentences/{id}/words/{wordId}',
+            input: UpdateSentenceWordDTO::class,
+            read: false,
+            name: 'put_sentence_word',
+            processor: UpdateSentenceWordProcessor::class,
         ),
         new Delete(
             uriTemplate: '/sentences/{id}/words/{wordId}',

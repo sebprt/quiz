@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\RemovedPieceController;
 use App\Repository\PuzzleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -46,6 +47,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/quizzes/{id}/pieces',
             denormalizationContext: ['groups' => ['puzzle:write:pieces']],
             name: 'post_quiz_pieces'
+        ),
+        new Delete(
+            uriTemplate: '/quizzes/{id}/pieces/{pieceId}',
+            controller: RemovedPieceController::class,
+            read: false,
+            name: 'delete_puzzle_piece',
         ),
     ],
 )]

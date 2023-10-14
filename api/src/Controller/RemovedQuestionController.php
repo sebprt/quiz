@@ -4,35 +4,35 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Sentence;
-use App\Entity\Word;
+use App\Entity\Question;
+use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class RemovedWordController extends AbstractController
+class RemovedQuestionController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $repository,
     ){}
 
-    public function __invoke(string $id, string $wordId): void
+    public function __invoke(string $id, string $questionId): void
     {
-        $sentence = $this->repository->find(Sentence::class, $id);
-        if ($sentence === null) {
+        $song = $this->repository->find(Song::class, $id);
+        if ($song === null) {
             throw new EntityNotFoundException();
         }
 
-        $word = $this->repository->find(Word::class, $wordId);
-        if ($word === null) {
+        $question = $this->repository->find(Question::class, $questionId);
+        if ($question === null) {
             throw new EntityNotFoundException();
         }
 
-        $sentence->removeWord($word);
+        $song->removeQuestion($question);
 
-        $this->repository->persist($sentence);
+        $this->repository->persist($song);
         $this->repository->flush();
     }
 }

@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\RemovedQuestionController;
 use App\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -45,6 +46,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/songs/{id}/questions',
             denormalizationContext: ['groups' => ['song:write:questions']],
             name: 'post_song_questions'
+        ),
+        new Delete(
+            uriTemplate: '/songs/{id}/questions/{questionId}',
+            controller: RemovedQuestionController::class,
+            read: false,
+            name: 'delete_song_question',
         ),
     ]
 )]
