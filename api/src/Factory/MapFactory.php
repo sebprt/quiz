@@ -7,6 +7,7 @@ use App\Repository\MapRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
+
 use function Zenstruck\Foundry\lazy;
 use function Zenstruck\Foundry\memoize;
 

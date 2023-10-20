@@ -9,6 +9,7 @@ use Zenstruck\Foundry\LazyValue;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\iterator;
 use function Zenstruck\Foundry\lazy;
 use function Zenstruck\Foundry\memoize;

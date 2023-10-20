@@ -16,8 +16,7 @@ final readonly class UpdateSentenceWordProcessor implements ProcessorInterface
 {
     public function __construct(
         private EntityManagerInterface $repository,
-    )
-    {
+    ) {
     }
 
     /** @param UpdateSentenceWordDTO $data */
