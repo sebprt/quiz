@@ -10,7 +10,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedQuestionController;
+use App\DTO\UpdateSongQuestionDTO;
 use App\Repository\SongRepository;
+use App\State\UpdateSongQuestionProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,6 +48,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/songs/{id}/questions',
             denormalizationContext: ['groups' => ['song:write:questions']],
             name: 'post_song_questions'
+        ),
+        new Put(
+            uriTemplate: '/songs/{id}/questions/{questionId}',
+            input: UpdateSongQuestionDTO::class,
+            read: false,
+            name: 'put_song_question',
+            processor: UpdateSongQuestionProcessor::class,
         ),
         new Delete(
             uriTemplate: '/songs/{id}/questions/{questionId}',

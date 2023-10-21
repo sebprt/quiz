@@ -10,7 +10,11 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedPieceController;
+use App\DTO\UpdatePuzzlePieceDTO;
+use App\DTO\UpdateSentenceWordDTO;
 use App\Repository\PuzzleRepository;
+use App\State\UpdatePuzzlePieceProcessor;
+use App\State\UpdateSentenceWordProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,12 +45,19 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/quizzes/{id}/pieces',
             normalizationContext: ['groups' => ['puzzle:read:pieces']],
-            name: 'get_quiz_pieces'
+            name: 'get_puzzle_pieces'
         ),
         new Post(
             uriTemplate: '/quizzes/{id}/pieces',
             denormalizationContext: ['groups' => ['puzzle:write:pieces']],
-            name: 'post_quiz_pieces'
+            name: 'post_puzzle_pieces'
+        ),
+        new Put(
+            uriTemplate: '/quizzes/{id}/pieces/{pieceId}',
+            input: UpdatePuzzlePieceDTO::class,
+            read: false,
+            name: 'put_puzzle_piece',
+            processor: UpdatePuzzlePieceProcessor::class,
         ),
         new Delete(
             uriTemplate: '/quizzes/{id}/pieces/{pieceId}',

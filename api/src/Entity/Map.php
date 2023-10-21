@@ -10,7 +10,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedRegionController;
+use App\DTO\UpdateMapRegionDTO;
 use App\Repository\MapRepository;
+use App\State\UpdateMapRegionProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -29,6 +31,13 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Delete(),
     new Get(uriTemplate: '/maps/{id}/regions', name: 'get_map_regions'),
     new Post(uriTemplate: '/maps/{id}/regions', name: 'post_map_regions'),
+    new Put(
+        uriTemplate: '/maps/{id}/regions/{regionId}',
+        input: UpdateMapRegionDTO::class,
+        read: false,
+        name: 'put_map_region',
+        processor: UpdateMapRegionProcessor::class,
+    ),
     new Delete(
         uriTemplate: '/maps/{id}/regions/{regionId}',
         controller: RemovedRegionController::class,

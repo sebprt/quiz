@@ -2,8 +2,8 @@
 
 namespace App\DTO;
 
-class UpdateSentenceWordDTO
+class UpdateSongQuestionDTO
 {
     public ?string $text = null;
-    public ?bool $isCorrect = null;
+    public ?string $answer = null;
 }
