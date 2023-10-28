@@ -19,12 +19,12 @@ class MathProblem
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
+    #[Groups(['puzzle:read:pieces'])]
     private ?string $text = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
+    #[Groups(['puzzle:read:pieces'])]
     private ?string $answer = null;
 
     public function getId(): ?Uuid

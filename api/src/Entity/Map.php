@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedRegionController;
+use App\DTO\CreateMapRegionDTO;
 use App\DTO\UpdateMapRegionDTO;
 use App\Repository\MapRepository;
 use App\State\UpdateMapRegionProcessor;
@@ -23,14 +24,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MapRepository::class)]
 #[ApiResource(operations: [
-    new GetCollection(),
-    new Post(),
-    new Get(),
-    new Put(),
-    new Patch(),
+    new GetCollection(
+        normalizationContext: ['groups' => ['map:read']],
+    ),
+    new Post(
+        denormalizationContext: ['groups' => ['map:write']],
+    ),
+    new Get(
+        normalizationContext: ['groups' => ['map:read']],
+    ),
+    new Put(
+        denormalizationContext: ['groups' => ['map:write']],
+    ),
+    new Patch(
+        denormalizationContext: ['groups' => ['map:write']],
+    ),
     new Delete(),
     new Get(uriTemplate: '/maps/{id}/regions', name: 'get_map_regions'),
-    new Post(uriTemplate: '/maps/{id}/regions', name: 'post_map_regions'),
+    new Post(
+        uriTemplate: '/maps/{id}/regions',
+        input: CreateMapRegionDTO::class,
+        name: 'post_map_regions'
+    ),
     new Put(
         uriTemplate: '/maps/{id}/regions/{regionId}',
         input: UpdateMapRegionDTO::class,
@@ -78,7 +93,7 @@ class Map
         minMessage: 'You must specify at least one region',
         maxMessage: 'You cannot specify more than {{ limit }} region',
     )]
-    #[Groups(['map:read:regions', 'map:write:regions'])]
+    #[Groups(['map:read:regions'])]
     private Collection $regions;
 
     public function __construct()

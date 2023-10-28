@@ -22,22 +22,22 @@ class Region
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['map:read:regions', 'map:write:regions'])]
+    #[Groups(['map:read:regions'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['map:read:regions', 'map:write:regions'])]
+    #[Groups(['map:read:regions'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['map:read:regions', 'map:write:regions'])]
+    #[Groups(['map:read:regions'])]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
     #[Assert\Type(type: 'boolean')]
-    #[Groups(['map:read:regions', 'map:write:regions'])]
+    #[Groups(['map:read:regions'])]
     private ?bool $isUnlocked = null;
 
     #[ORM\JoinTable(name: 'region_questions')]
@@ -49,7 +49,7 @@ class Region
         minMessage: 'You must specify at least one question',
         maxMessage: 'You cannot specify more than {{ limit }} questions',
     )]
-    #[Groups(['map:read:regions', 'map:write:regions'])]
+    #[Groups(['map:read:regions'])]
     private Collection $questions;
 
     public function __construct()

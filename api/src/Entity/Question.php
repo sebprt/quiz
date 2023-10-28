@@ -23,12 +23,12 @@ class Question
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['song:read:questions', 'song:write:questions', 'map:read:regions', 'map:write:regions'])]
+    #[Groups(['song:read:questions', 'map:read:regions'])]
     protected ?string $text = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['song:read:questions', 'song:write:questions', 'map:read:regions', 'map:write:regions'])]
+    #[Groups(['song:read:questions', 'map:read:regions'])]
     protected ?string $answer = null;
 
     public function getId(): ?Uuid

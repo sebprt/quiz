@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedPieceController;
+use App\DTO\CreatePuzzlePieceDTO;
 use App\DTO\UpdatePuzzlePieceDTO;
 use App\DTO\UpdateSentenceWordDTO;
 use App\Repository\PuzzleRepository;
@@ -49,7 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             uriTemplate: '/quizzes/{id}/pieces',
-            denormalizationContext: ['groups' => ['puzzle:write:pieces']],
+            input: CreatePuzzlePieceDTO::class,
             name: 'post_puzzle_pieces'
         ),
         new Put(
@@ -95,7 +96,7 @@ class Puzzle
         minMessage: 'You must specify at least one piece',
         maxMessage: 'You cannot specify more than {{ limit }} pieces',
     )]
-    #[Groups(['puzzle:read:pieces', 'puzzle:write:pieces'])]
+    #[Groups(['puzzle:read:pieces'])]
     private Collection $pieces;
 
     public function __construct()

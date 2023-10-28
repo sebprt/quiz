@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedQuestionController;
+use App\DTO\CreateSongQuestionDTO;
 use App\DTO\UpdateSongQuestionDTO;
 use App\Repository\SongRepository;
 use App\State\UpdateSongQuestionProcessor;
@@ -46,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             uriTemplate: '/songs/{id}/questions',
-            denormalizationContext: ['groups' => ['song:write:questions']],
+            input: CreateSongQuestionDTO::class,
             name: 'post_song_questions'
         ),
         new Put(
@@ -102,7 +103,7 @@ class Song
         minMessage: 'You must specify at least one question',
         maxMessage: 'You cannot specify more than {{ limit }} questions',
     )]
-    #[Groups(['song:read:questions', 'song:write:questions'])]
+    #[Groups(['song:read:questions'])]
     private Collection $questions;
 
     public function __construct()

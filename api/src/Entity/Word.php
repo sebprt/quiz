@@ -19,12 +19,12 @@ class Word
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull, Assert\NotBlank]
-    #[Groups(['sentence:read:words', 'sentence:write:words'])]
+    #[Groups(['sentence:read:words'])]
     private ?string $text = null;
 
     #[ORM\Column]
     #[Assert\NotNull, Assert\Type(type: 'boolean')]
-    #[Groups(['sentence:read:words', 'sentence:write:words'])]
+    #[Groups(['sentence:read:words'])]
     private ?bool $isCorrect = null;
 
     public function getId(): ?Uuid

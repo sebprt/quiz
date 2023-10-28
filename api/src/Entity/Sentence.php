@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\RemovedWordController;
+use App\DTO\CreateSentenceWordDTO;
 use App\DTO\UpdateSentenceWordDTO;
 use App\Repository\SentenceRepository;
 use App\State\UpdateSentenceWordProcessor;
@@ -48,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(
             uriTemplate: '/sentences/{id}/words',
-            denormalizationContext: ['groups' => ['sentence:write:words']],
+            input: CreateSentenceWordDTO::class,
             name: 'post_sentence_words',
         ),
         new Put(
@@ -89,7 +90,7 @@ class Sentence
         minMessage: 'You must specify at least one word',
         maxMessage: 'You cannot specify more than {{ limit }} words',
     )]
-    #[Groups(['sentence:read:words', 'sentence:write:words'])]
+    #[Groups(['sentence:read:words'])]
     private Collection $words;
 
     public function __construct()
