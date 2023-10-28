@@ -46,26 +46,26 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Delete(),
         new Get(
-            uriTemplate: '/quizzes/{id}/pieces',
+            uriTemplate: '/puzzles/{id}/pieces',
             normalizationContext: ['groups' => ['puzzle:read:pieces']],
             name: 'get_puzzle_pieces'
         ),
         new Post(
-            uriTemplate: '/quizzes/{id}/pieces',
+            uriTemplate: '/puzzles/{id}/pieces',
             input: CreatePuzzlePieceDTO::class,
             read: false,
             name: 'post_puzzle_pieces',
             processor: CreateMapRegionProcessor::class,
         ),
         new Put(
-            uriTemplate: '/quizzes/{id}/pieces/{pieceId}',
+            uriTemplate: '/puzzles/{id}/pieces/{pieceId}',
             input: UpdatePuzzlePieceDTO::class,
             read: false,
             name: 'put_puzzle_piece',
             processor: UpdatePuzzlePieceProcessor::class,
         ),
         new Delete(
-            uriTemplate: '/quizzes/{id}/pieces/{pieceId}',
+            uriTemplate: '/puzzles/{id}/pieces/{pieceId}',
             controller: RemovedPieceController::class,
             read: false,
             name: 'delete_puzzle_piece',
