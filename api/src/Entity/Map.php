@@ -41,7 +41,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         denormalizationContext: ['groups' => ['map:write']],
     ),
     new Delete(),
-    new Get(uriTemplate: '/maps/{id}/regions', name: 'get_map_regions'),
+    new Get(
+        uriTemplate: '/maps/{id}/regions',
+        normalizationContext: ['groups' => ['map:read:regions']],
+        name: 'get_map_regions',
+    ),
     new Post(
         uriTemplate: '/maps/{id}/regions',
         input: CreateMapRegionDTO::class,
