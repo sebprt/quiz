@@ -14,6 +14,8 @@ use App\DTO\CreatePuzzlePieceDTO;
 use App\DTO\UpdatePuzzlePieceDTO;
 use App\DTO\UpdateSentenceWordDTO;
 use App\Repository\PuzzleRepository;
+use App\State\CreateMapRegionProcessor;
+use App\State\UpdateMapRegionProcessor;
 use App\State\UpdatePuzzlePieceProcessor;
 use App\State\UpdateSentenceWordProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -51,7 +53,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             uriTemplate: '/quizzes/{id}/pieces',
             input: CreatePuzzlePieceDTO::class,
-            name: 'post_puzzle_pieces'
+            read: false,
+            name: 'post_puzzle_pieces',
+            processor: CreateMapRegionProcessor::class,
         ),
         new Put(
             uriTemplate: '/quizzes/{id}/pieces/{pieceId}',

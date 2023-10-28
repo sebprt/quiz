@@ -13,6 +13,7 @@ use App\Controller\RemovedRegionController;
 use App\DTO\CreateMapRegionDTO;
 use App\DTO\UpdateMapRegionDTO;
 use App\Repository\MapRepository;
+use App\State\CreateMapRegionProcessor;
 use App\State\UpdateMapRegionProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -44,7 +45,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Post(
         uriTemplate: '/maps/{id}/regions',
         input: CreateMapRegionDTO::class,
-        name: 'post_map_regions'
+        read: false,
+        name: 'post_map_regions',
+        processor: CreateMapRegionProcessor::class,
     ),
     new Put(
         uriTemplate: '/maps/{id}/regions/{regionId}',
