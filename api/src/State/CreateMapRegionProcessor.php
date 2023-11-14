@@ -14,6 +14,7 @@ use App\Entity\RegionQuestion;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final readonly class CreateMapRegionProcessor implements ProcessorInterface
 {
@@ -29,7 +30,7 @@ final readonly class CreateMapRegionProcessor implements ProcessorInterface
         $request = $context['request'];
         $map = $this->repository->find(Map::class, $request->get('id'));
         if ($map === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $region =  (new Region())

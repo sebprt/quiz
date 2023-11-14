@@ -10,6 +10,7 @@ use App\Entity\Puzzle;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 final readonly class UpdatePuzzlePieceProcessor implements ProcessorInterface
@@ -26,7 +27,7 @@ final readonly class UpdatePuzzlePieceProcessor implements ProcessorInterface
         $request = $context['request'];
         $puzzle = $this->repository->find(Puzzle::class, $request->get('id'));
         if ($puzzle === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $puzzle->getQuestions()->map(

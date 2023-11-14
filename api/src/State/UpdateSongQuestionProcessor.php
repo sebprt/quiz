@@ -10,6 +10,7 @@ use App\Entity\SongQuestion;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 final readonly class UpdateSongQuestionProcessor implements ProcessorInterface
@@ -26,7 +27,7 @@ final readonly class UpdateSongQuestionProcessor implements ProcessorInterface
         $request = $context['request'];
         $song = $this->repository->find(Song::class, $request->get('id'));
         if ($song === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $song->getQuestions()->map(

@@ -10,6 +10,7 @@ use App\Entity\Region;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 final readonly class UpdateMapRegionProcessor implements ProcessorInterface
@@ -26,7 +27,7 @@ final readonly class UpdateMapRegionProcessor implements ProcessorInterface
         $request = $context['request'];
         $map = $this->repository->find(Map::class, $request->get('id'));
         if ($map === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $map->getRegions()->map(

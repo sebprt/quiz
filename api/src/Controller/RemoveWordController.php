@@ -7,9 +7,9 @@ namespace App\Controller;
 use App\Entity\Sentence;
 use App\Entity\Word;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 #[AsController]
 class RemoveWordController extends AbstractController
@@ -23,12 +23,12 @@ class RemoveWordController extends AbstractController
     {
         $sentence = $this->repository->find(Sentence::class, $id);
         if ($sentence === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $word = $this->repository->find(Word::class, $wordId);
         if ($word === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $sentence->removeWord($word);

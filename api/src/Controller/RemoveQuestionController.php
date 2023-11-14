@@ -7,9 +7,9 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 #[AsController]
 class RemoveQuestionController extends AbstractController
@@ -23,12 +23,12 @@ class RemoveQuestionController extends AbstractController
     {
         $song = $this->repository->find(Song::class, $id);
         if ($song === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $question = $this->repository->find(Question::class, $questionId);
         if ($question === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $song->removeQuestion($question);

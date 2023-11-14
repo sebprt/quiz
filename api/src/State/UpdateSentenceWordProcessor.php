@@ -10,6 +10,7 @@ use App\Entity\Word;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 final readonly class UpdateSentenceWordProcessor implements ProcessorInterface
@@ -26,7 +27,7 @@ final readonly class UpdateSentenceWordProcessor implements ProcessorInterface
         $request = $context['request'];
         $sentence = $this->repository->find(Sentence::class, $request->get('id'));
         if ($sentence === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $sentence->getWords()->map(

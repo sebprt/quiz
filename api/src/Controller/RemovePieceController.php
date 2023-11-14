@@ -7,9 +7,9 @@ namespace App\Controller;
 use App\Entity\Piece;
 use App\Entity\Puzzle;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 #[AsController]
 class RemovePieceController extends AbstractController
@@ -23,12 +23,12 @@ class RemovePieceController extends AbstractController
     {
         $puzzle = $this->repository->find(Puzzle::class, $id);
         if ($puzzle === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $piece = $this->repository->find(Piece::class, $pieceId);
         if ($piece === null) {
-            throw new EntityNotFoundException();
+            throw new NotFoundHttpException();
         }
 
         $puzzle->removePiece($piece);
