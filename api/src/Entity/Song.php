@@ -9,7 +9,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\RemovedQuestionController;
+use ApiPlatform\OpenApi\Model\Operation;
+use App\Controller\RemoveQuestionController;
 use App\DTO\CreateSongQuestionDTO;
 use App\DTO\UpdateSongQuestionDTO;
 use App\Repository\SongRepository;
@@ -42,16 +43,28 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(),
         new Get(
             uriTemplate: '/songs/{id}/questions',
+            openapi: new Operation(
+                summary: 'Retrieves a Question resource belonging to a Song resource.',
+                description: 'Removes a Piece resource belonging to a Song resource.',
+            ),
             normalizationContext: ['groups' => ['song:read:questions']],
-            name: 'get_song_questions'
+            name: 'get_song_questions',
         ),
         new Post(
             uriTemplate: '/songs/{id}/questions',
+            openapi: new Operation(
+                summary: 'Creates a Question resource belonging to a Song resource.',
+                description: 'Creates a Piece resource belonging to a Song resource.',
+            ),
             input: CreateSongQuestionDTO::class,
             name: 'post_song_questions'
         ),
         new Put(
             uriTemplate: '/songs/{id}/questions/{questionId}',
+            openapi: new Operation(
+                summary: 'Updates a Question resource belonging to a Song resource.',
+                description: 'Updates a Piece resource belonging to a Song resource.',
+            ),
             input: UpdateSongQuestionDTO::class,
             read: false,
             name: 'put_song_question',
@@ -59,7 +72,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Delete(
             uriTemplate: '/songs/{id}/questions/{questionId}',
-            controller: RemovedQuestionController::class,
+            controller: RemoveQuestionController::class,
+            openapi: new Operation(
+                summary: 'Removes a Question resource belonging to a Song resource.',
+                description: 'Removes a Piece resource belonging to a Song resource.',
+            ),
             read: false,
             name: 'delete_song_question',
         ),

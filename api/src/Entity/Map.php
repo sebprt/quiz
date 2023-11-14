@@ -9,7 +9,9 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\RemovedRegionController;
+use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\Model\RequestBody;
+use App\Controller\RemoveRegionController;
 use App\DTO\CreateMapRegionDTO;
 use App\DTO\UpdateMapRegionDTO;
 use App\Repository\MapRepository;
@@ -43,11 +45,19 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Delete(),
     new Get(
         uriTemplate: '/maps/{id}/regions',
+        openapi: new Operation(
+            summary: 'Retrieves the collection of Region resources belonging to a Map resource.',
+            description: 'Retrieves the collection of Region resources belonging to a Map resource.',
+        ),
         normalizationContext: ['groups' => ['map:read:regions']],
         name: 'get_map_regions',
     ),
     new Post(
         uriTemplate: '/maps/{id}/regions',
+        openapi: new Operation(
+            summary: 'Creates a Region resource belonging to a Map resource.',
+            description: 'Creates a Region resource belonging to a Map resource.',
+        ),
         input: CreateMapRegionDTO::class,
         read: false,
         name: 'post_map_regions',
@@ -55,14 +65,22 @@ use Symfony\Component\Validator\Constraints as Assert;
     ),
     new Put(
         uriTemplate: '/maps/{id}/regions/{regionId}',
+        openapi: new Operation(
+            summary: 'Updates a Region resource belonging to a Map resource.',
+            description: 'Updates a Region resource belonging to a Map resource.',
+        ),
         input: UpdateMapRegionDTO::class,
         read: false,
         name: 'put_map_region',
-        processor: UpdateMapRegionProcessor::class,
+        processor: UpdateMapRegionProcessor::class
     ),
     new Delete(
         uriTemplate: '/maps/{id}/regions/{regionId}',
-        controller: RemovedRegionController::class,
+        controller: RemoveRegionController::class,
+        openapi: new Operation(
+            summary: 'Deletes a Region resource belonging to a Map resource.',
+            description: 'Deletes a Region resource belonging to a Map resource.',
+        ),
         read: false,
         name: 'delete_map_region',
     ),

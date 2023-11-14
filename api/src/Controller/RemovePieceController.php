@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class RemovedPieceController extends AbstractController
+class RemovePieceController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $repository,

@@ -10,7 +10,8 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\RemovedWordController;
+use ApiPlatform\OpenApi\Model\Operation;
+use App\Controller\RemoveWordController;
 use App\DTO\CreateSentenceWordDTO;
 use App\DTO\UpdateSentenceWordDTO;
 use App\Repository\SentenceRepository;
@@ -44,16 +45,28 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(),
         new Get(
             uriTemplate: '/sentences/{id}/words',
+            openapi: new Operation(
+                summary: 'Retrieves a Word resource belonging to a Sentence resource.',
+                description: 'Retrieves a Word resource belonging to a Sentence resource.',
+            ),
             normalizationContext: ['groups' => ['sentence:read:words']],
             name: 'get_sentence_words',
         ),
         new Post(
             uriTemplate: '/sentences/{id}/words',
+            openapi: new Operation(
+                summary: 'Creates a Word resource belonging to a Sentence resource.',
+                description: 'Creates a Word resource belonging to a Sentence resource.',
+            ),
             input: CreateSentenceWordDTO::class,
             name: 'post_sentence_words',
         ),
         new Put(
             uriTemplate: '/sentences/{id}/words/{wordId}',
+            openapi: new Operation(
+                summary: 'Updates a Word resource belonging to a Sentence resource.',
+                description: 'Updates a Word resource belonging to a Sentence resource.',
+            ),
             input: UpdateSentenceWordDTO::class,
             read: false,
             name: 'put_sentence_word',
@@ -61,7 +74,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Delete(
             uriTemplate: '/sentences/{id}/words/{wordId}',
-            controller: RemovedWordController::class,
+            controller: RemoveWordController::class,
+            openapi: new Operation(
+                summary: 'Removes a Word resource belonging to a Sentence resource.',
+                description: 'Removes a Word resource belonging to a Sentence resource.',
+            ),
             read: false,
             name: 'delete_sentence_word',
         ),

@@ -9,7 +9,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\RemovedPieceController;
+use ApiPlatform\OpenApi\Model\Operation;
+use App\Controller\RemovePieceController;
 use App\DTO\CreatePuzzlePieceDTO;
 use App\DTO\UpdatePuzzlePieceDTO;
 use App\DTO\UpdateSentenceWordDTO;
@@ -47,11 +48,19 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(),
         new Get(
             uriTemplate: '/puzzles/{id}/pieces',
+            openapi: new Operation(
+                summary: 'Retrieves a Piece resource belonging to a Puzzle resource.',
+                description: 'Deletes a Piece resource belonging to a Puzzle resource.',
+            ),
             normalizationContext: ['groups' => ['puzzle:read:pieces']],
-            name: 'get_puzzle_pieces'
+            name: 'get_puzzle_pieces',
         ),
         new Post(
             uriTemplate: '/puzzles/{id}/pieces',
+            openapi: new Operation(
+                summary: 'Creates a Piece resource belonging to a Puzzle resource.',
+                description: 'Creates a Piece resource belonging to a Puzzle resource.',
+            ),
             input: CreatePuzzlePieceDTO::class,
             read: false,
             name: 'post_puzzle_pieces',
@@ -59,6 +68,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Put(
             uriTemplate: '/puzzles/{id}/pieces/{pieceId}',
+            openapi: new Operation(
+                summary: 'Updates a Piece resource belonging to a Puzzle resource.',
+                description: 'Updates a Piece resource belonging to a Puzzle resource.',
+            ),
             input: UpdatePuzzlePieceDTO::class,
             read: false,
             name: 'put_puzzle_piece',
@@ -66,7 +79,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Delete(
             uriTemplate: '/puzzles/{id}/pieces/{pieceId}',
-            controller: RemovedPieceController::class,
+            controller: RemovePieceController::class,
+            openapi: new Operation(
+                summary: 'Removes a Piece resource belonging to a Puzzle resource.',
+                description: 'Removes a Piece resource belonging to a Puzzle resource.',
+            ),
             read: false,
             name: 'delete_puzzle_piece',
         ),
