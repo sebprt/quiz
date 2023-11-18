@@ -6,30 +6,50 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 class Region
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['map:read:regions'])]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['map:read:regions'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['map:read:regions'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull, Assert\NotBlank]
+    #[Groups(['map:read:regions'])]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
+    #[Assert\Type(type: 'boolean')]
+    #[Groups(['map:read:regions'])]
     private ?bool $isUnlocked = null;
 
     #[ORM\JoinTable(name: 'region_questions')]
     #[ORM\InverseJoinColumn(unique: true)]
     #[ORM\ManyToMany(targetEntity: RegionQuestion::class)]
+    #[Assert\Count(
+        min: 1,
+        max: 20,
+        minMessage: 'You must specify at least one question',
+        maxMessage: 'You cannot specify more than {{ limit }} questions',
+    )]
+    #[Groups(['map:read:regions'])]
     private Collection $questions;
 
     public function __construct()
@@ -37,7 +57,7 @@ class Region
         $this->questions = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
