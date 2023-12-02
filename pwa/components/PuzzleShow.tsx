@@ -1,5 +1,5 @@
 import { Show, TabbedShowLayout, TextField, ReferenceArrayField, Datagrid, NumberField,  BooleanField } from 'react-admin'
-import PieceDatagrid from "./PieceDatagrid";
+import PieceList from "./PieceList";
 
 const PuzzleShow = props => (
   <Show {...props}>
@@ -8,8 +8,8 @@ const PuzzleShow = props => (
         <TextField source="name" />
         <TextField source="imageUrl" />
       </TabbedShowLayout.Tab>
-      <TabbedShowLayout.Tab label="Pieces" path="body">
-        <PieceDatagrid />
+      <TabbedShowLayout.Tab label="Pieces" path="pieces">
+        <PieceList />
       </TabbedShowLayout.Tab>
     </TabbedShowLayout>
   </Show>
